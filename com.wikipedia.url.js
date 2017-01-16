@@ -6,7 +6,19 @@ exports = module.exports = {
 	output_optional : [],
 	meta : {
 		tags : [ 'location' ],
-		author : 'unknown'
+		author : 'unknown',
+		documentation :
+		{
+			location : {
+				description: 'A string describing any location',
+				type: 'string',
+				example: 'raleigh nc'
+			},
+			wikipedia_url: {
+				description: 'A url to a wikipedia page',
+				type : 'string'
+			}
+		}
 	},
 	process : function(req)
 	{
