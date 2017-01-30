@@ -1,16 +1,16 @@
 exports = module.exports = {
 	id : 'com.wikipedia.url',
-	input : ["location"],
+	input : ["search_term"],
 	output : ["wikipedia_url"],
 	input_optional : [],
 	output_optional : [],
 	meta : {
-		tags : [ 'location' ],
+		tags : [ 'search' ],
 		author : 'unknown',
 		documentation :
 		{
-			location : {
-				description: 'A string describing any location',
+			search_term : {
+				description: 'Search term',
 				type: 'string',
 				example: 'raleigh nc'
 			},
@@ -28,7 +28,7 @@ exports = module.exports = {
 		{
 			format : 'json',
 			action : 'query',
-			titles : req.location,
+			titles : req.search_term,
 			prop : 'info',
 			inprop : 'url',
 			indexpageids : ''
