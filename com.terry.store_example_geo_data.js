@@ -4,6 +4,7 @@ exports = module.exports = {
 	output : [ 'example_geo_parse_finished' ], //Outputs from n-app if it is successful
 	input_optional : [],
 	output_optional : [],
+	do_not_cache : true, //Used primarily for testing when you want the n-app to always run (instead of pulling cached results) even with the same inputs
 	meta : { //Meta for easier documentation/finding. Not required
 		tags : [ 'utility', 'example' ],
 		author : 'terry',
