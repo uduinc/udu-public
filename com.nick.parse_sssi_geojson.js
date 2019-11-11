@@ -47,27 +47,26 @@ exports = module.exports = {
 				console.error( 'Error getting contents of geojson file:', err );
 				return this.fail( );
 			}
-			const len = data.features.length;
 
 			// Insert in batches of 100
 			// Attempting to insert all of the data at once could crash nodejs
-			const insertGroup = startIdx => {
-				const stopIdx = Math.min( startIdx+100, len );
-				let waiting = stopIdx-startIdx;
+			const insertGroup = () => {
+				const batchSize = Math.min( 100, data.features.length );
+				let waiting = batchSize;
 
-				for ( let i=startIdx; i<stopIdx; i++ ) {
-					this.data.add( req.datasource_name, data.features[ i ], { dbType: 'mongo' }, err => {
+				for ( let i=0; i<batchSize; i++ ) {
+					this.data.add( req.datasource_name, data.features.pop(), { dbType: 'mongo' }, err => {
 						if ( err ) {
 							console.error( '<> got error on', i );
 							parseError = err;
 						}
 						if ( !( --waiting ) ) {
-							if ( stopIdx === len ) {
+							if ( !data.features.length ) {
 								// console.log( 'done' );
 								this.data.finishBatchOperation( );
 							} else {
-								// console.log( `[ ${stopIdx} / ${len} ]` );
-								setImmediate( insertGroup, stopIdx );
+								// console.log( data.features.length );
+								setImmediate( insertGroup );
 							}
 						}
 					});
@@ -75,7 +74,7 @@ exports = module.exports = {
 			};
 
 			if ( req.sssi_do_not_overwrite ) {
-				insertGroup( 0 );
+				insertGroup( );
 			} else {
 				// console.log( 'Clearing old data' );
 
@@ -86,7 +85,7 @@ exports = module.exports = {
 					}
 
 					// console.log( `Inserting ${len} documents` );
-					insertGroup( 0 );
+					insertGroup( );
 				});
 			}
 		});
