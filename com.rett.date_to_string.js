@@ -12,6 +12,7 @@ exports = module.exports = {
 	{
 		this.moment = this.require( 'moment' );
 	},
+	do_not_cache: true,
 	process : function( req )
 	{
 		var moment = this.moment;
