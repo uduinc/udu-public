@@ -2,7 +2,7 @@ exports = module.exports = {
 	id : 'com.sbir.search',
 	input : ["sbir_search"],
 	output : ["sbir_grants"],
-	input_optional : ["sbir_keywords", "sbir_agency", "sbir_ri", "sbir_company", "sbir_year", "num_results"],
+	input_optional : [/*"sbir_keywords",*/ "sbir_agency", "sbir_ri", "sbir_company", "sbir_year", "num_results"],
 	output_optional : [],
 	meta : {
 		tags : [ 'grants', 'sbir' ],
@@ -18,11 +18,11 @@ exports = module.exports = {
 				description: 'Array of SBIR grant objects',
 				type: 'array'
 			},
-			'sbir_keywords' : {
-				description: 'Keywords to search on the SBIR API (all words are OR\'d)',
-				type: 'array',
-				example: ["space", "laser"]
-			},
+			// 'sbir_keywords' : {
+			// 	description: 'Keywords to search on the SBIR API (all words are OR\'d)',
+			// 	type: 'array',
+			// 	example: ["space", "laser"]
+			// },
 			'sbir_agency' : {
 				description: 'Agency to search on the SBIR API (must be one of the following: "DOD","HHS","NASA","NSF","DOE","USDA","EPA","DOC","ED","DOT", or "DHS"',
 				type: 'string',
@@ -61,33 +61,34 @@ exports = module.exports = {
 		if (req.sbir_agency && (typeof req.sbir_agency !== "string" || validAgencies.indexOf(req.sbir_agency.toUpperCase()) == -1)){
 			console.log("Failure in com.sbir.search: invalid agency.");
 			return this.fail();
-		}		
-		if (req.sbir_keywords) {
-			//Handle strings. If it's not a string, assume it's an array or fail
-			if (typeof req.sbir_keywords == "string"){
-				keywords = req.sbir_keywords;
-			}
-			else if (typeof req.sbir_keywords == "object"){
-				var isFirst = true;
-				for (var i=0; i<req.sbir_keywords.length; i++){
-					if (isFirst){
-						keywords = req.sbir_keywords[i];
-						isFirst = false;
-					}
-					else {
-						keywords += " " + req.sbir_keywords[i];
-					}
-				}
-			}
-			else {
-				console.log("Failure in com.sbir.search: invalid keyword structure. Use a string or an array of strings.");
-				return this.fail();
-			}
 		}
+		// Removing keywords input as it is no longer supported in the API - TR
+		// if (req.sbir_keywords) {
+		// 	//Handle strings. If it's not a string, assume it's an array or fail
+		// 	if (typeof req.sbir_keywords == "string"){
+		// 		keywords = req.sbir_keywords;
+		// 	}
+		// 	else if (typeof req.sbir_keywords == "object"){
+		// 		var isFirst = true;
+		// 		for (var i=0; i<req.sbir_keywords.length; i++){
+		// 			if (isFirst){
+		// 				keywords = req.sbir_keywords[i];
+		// 				isFirst = false;
+		// 			}
+		// 			else {
+		// 				keywords += " " + req.sbir_keywords[i];
+		// 			}
+		// 		}
+		// 	}
+		// 	else {
+		// 		console.log("Failure in com.sbir.search: invalid keyword structure. Use a string or an array of strings.");
+		// 		return this.fail();
+		// 	}
+		// }
 
-		if (req.sbir_keywords){
-			query.keyword = keywords;
-		}
+		// if (req.sbir_keywords){
+		// 	query.keyword = keywords;
+		// }
 		if (req.sbir_agency){
 			query.agency = req.sbir_agency;
 		}
