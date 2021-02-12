@@ -1,5 +1,5 @@
 exports = module.exports = {
-	id : 'com.slack.send_message_2',
+	id : 'com.slack.send_message',
 	input : [ 'slack_message', 'slack_web_hook' ],
 	output : [ 'slack_message_sent' ],
 	input_optional : [ 'slack_channel_name' ],
