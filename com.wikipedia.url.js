@@ -22,8 +22,7 @@ exports = module.exports = {
 	},
 	process : function(req)
 	{
-		var _id = this.id;
-
+		const self = this;
 		var params =
 		{
 			format : 'json',
@@ -49,15 +48,14 @@ exports = module.exports = {
 				{
 					var mut = 
 					{
-						source : _id,
 						wikipedia_url : obj.query.pages[thispage].fullurl
 					};
-					udu.mutateRequest(req, mut);
+					self.mutate(mut);
 				} else {
-					udu.addFailureToRequest(req, _id);
+					self.fail();
 				}
 			} else {
-				udu.addFailureToRequest(req, _id);
+				self.fail();
 			}
 		});
 	}
